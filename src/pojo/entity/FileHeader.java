@@ -328,7 +328,7 @@ public class FileHeader {
 
     @Override
     public String toString() {
-        return "###文件头第一部分###\n" +
+        return "\n###文件头第一部分###\n" +
                 textualFileHeader +
                 "\n\n###文件头第二部分###" +
                 "\n作业标识号=" + jobIdentificationNumber +

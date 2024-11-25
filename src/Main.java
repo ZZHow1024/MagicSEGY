@@ -1,3 +1,4 @@
+import pojo.entity.DataBody;
 import pojo.entity.FileHeader;
 import util.SEGYUtils;
 
@@ -12,5 +13,9 @@ public class Main {
 
         FileHeader fileHeader = SEGYUtils.parseFileHeader(filePath);
         System.out.println(fileHeader);
+
+        // 当前仅支持读一组数据道
+        DataBody dataBody = SEGYUtils.parseDataBody(filePath, fileHeader);
+        System.out.println(dataBody);
     }
 }
