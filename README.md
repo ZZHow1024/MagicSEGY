@@ -1,2 +1,2 @@
-# MagicSEGY
-MagicSEGY.Developing with Java.
+# ZSEGY
+ZSEGY.Developing with Java.
