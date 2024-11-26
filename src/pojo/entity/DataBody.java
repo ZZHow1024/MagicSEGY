@@ -183,7 +183,7 @@ public class DataBody {
     // 233-240：未赋值――为任选信息预留
     /**/
 
-    private byte[] samplingData;
+    private float[] samplingData;
 
     public DataBody() {
     }
@@ -532,7 +532,7 @@ public class DataBody {
         return sourceMeasurementUnit;
     }
 
-    public byte[] getSamplingData() {
+    public float[] getSamplingData() {
         return samplingData;
     }
 
@@ -880,7 +880,7 @@ public class DataBody {
         this.sourceMeasurementUnit = sourceMeasurementUnit;
     }
 
-    public void setSamplingData(byte[] samplingData) {
+    public void setSamplingData(float[] samplingData) {
         this.samplingData = samplingData;
     }
 
