@@ -34,7 +34,7 @@ public class Main {
                         System.exit(0);;
                     }
                     segy = SEGYUtils.parseSEGY(args[2]);
-                    System.out.println("第 " + num + " 个数据道：");
+                    System.out.println("\n@@@第 " + num + " 个数据道@@@");
                     System.out.println(segy.getDataBodies().get(num));
                     System.exit(0);
                 }
@@ -46,10 +46,9 @@ public class Main {
                         System.out.println("输入格式错误，输入 -help 查看提示");
                         break;
                     }
-                    System.out.println("正在解析中...");
                     segy = SEGYUtils.parseSEGY(args[2]);
                     System.out.println(segy.getFileHeader());
-                    System.out.println("第 " + num + " 个数据道：");
+                    System.out.println("\n@@@第 " + num + " 个数据道@@@");
                     System.out.println(segy.getDataBodies().get(num));
                     System.exit(0);
                 }
