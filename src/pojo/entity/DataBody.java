@@ -886,7 +886,7 @@ public class DataBody {
 
     @Override
     public String toString() {
-        return "\n###数据体第一部分###" +
+        return "\n###数据道第一部分###" +
                 "\n测线中道顺序号=" + traceSequenceNumberWithinLine +
                 "\nSEG Y文件中道顺序号=" + traceSequenceNumberWithinSEGY +
                 "\n野外原始记录号=" + originalFieldRecordNumber +
@@ -973,6 +973,6 @@ public class DataBody {
                 "\n相对震源方位的震源能量方向=" + sourceEnergyDirection +
                 "\n震源测量=" + sourceMeasurement +
                 "\n震源测量单位=" + sourceMeasurementUnit +
-                "\n\n###数据体第二部分###\n" + Arrays.toString(samplingData);
+                "\n\n###数据道第二部分###\n" + Arrays.toString(samplingData);
     }
 }
