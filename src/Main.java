@@ -14,7 +14,7 @@ public class Main {
         SEGY segy = new SEGY();
         String filePath = "";
 
-        System.out.println("ZSEGY 1.0");
+        System.out.println("ZSEGY 1.0.0");
         System.out.println("Author: ZZHow");
 
         if (args.length != 0) {
@@ -56,7 +56,7 @@ public class Main {
                     filePath = args[1];
                 }
                 case "-help", "help" -> {
-                    System.out.println("--- ZSEGY 1.0 使用说明 ---");
+                    System.out.println("--- ZSEGY 1.0.0 使用说明 ---");
                     System.out.println("java -jar zsegy.jar [-command] <num> [filePath]");
                     System.out.println("[-command]: ");
                     System.out.println("-head [filePath]：解析并输出文件头");
