@@ -17,8 +17,8 @@ public class Main {
         System.out.println("ZSEGY 1.0.0");
         System.out.println("Author: ZZHow");
 
+        // 命令模式
         if (args.length != 0) {
-
             switch (args[0]) {
                 case "-head", "head" -> {
                     System.out.println("正在解析中...");
@@ -35,7 +35,7 @@ public class Main {
                     }
                     segy = SEGYUtils.parseSEGY(args[2]);
                     System.out.println("\n@@@第 " + num + " 个数据道@@@");
-                    System.out.println(segy.getDataBodies().get(num));
+                    System.out.println(segy.getDataBody().get(num));
                     System.exit(0);
                 }
                 case "-all", "all" -> {
@@ -49,7 +49,7 @@ public class Main {
                     segy = SEGYUtils.parseSEGY(args[2]);
                     System.out.println(segy.getFileHeader());
                     System.out.println("\n@@@第 " + num + " 个数据道@@@");
-                    System.out.println(segy.getDataBodies().get(num));
+                    System.out.println(segy.getDataBody().get(num));
                     System.exit(0);
                 }
                 case "-i", "i" -> {
@@ -111,7 +111,7 @@ public class Main {
                 case "2" -> {
                     System.out.print("数据道数：");
                     long num = scanner.nextLong();
-                    System.out.println(segy.getDataBodies().get(num));
+                    System.out.println(segy.getDataBody().get(num));
                 }
                 case "3" -> {
                     System.out.println("程序退出...");

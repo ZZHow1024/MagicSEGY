@@ -1,6 +1,6 @@
 package util;
 
-import pojo.entity.DataBody;
+import pojo.entity.DataTrace;
 import pojo.entity.FileHeader;
 import pojo.entity.SEGY;
 
@@ -16,6 +16,22 @@ import java.util.Map;
  */
 public class SEGYUtils {
 
+    /**
+     * 解析 SEG-Y 文件
+     *
+     * @param file SEG-Y 文件
+     * @return SEGY
+     */
+    public static SEGY parseSEGY(File file) {
+        return parseSEGY(file.getAbsolutePath());
+    }
+
+    /**
+     * 解析 SEG-Y 文件
+     *
+     * @param filePath SEG-Y 文件路径
+     * @return SEGY
+     */
     public static SEGY parseSEGY(String filePath) {
         SEGY segy = new SEGY();
 
@@ -23,9 +39,9 @@ public class SEGYUtils {
         long start = System.currentTimeMillis();
         FileHeader fileHeader = SEGYUtils.parseFileHeader(filePath);
         segy.setFileHeader(fileHeader);
-        Map<Long, DataBody> longDataBodyMap = null;
+        Map<Long, DataTrace> longDataBodyMap = null;
         longDataBodyMap = SEGYUtils.parseDataBody(filePath, fileHeader, false);
-        segy.setDataBodies(longDataBodyMap);
+        segy.setDataBody(longDataBodyMap);
         long end = System.currentTimeMillis();
         System.out.println("文件解析完成，耗时：" + (end - start) + "ms");
         System.out.println("文件共有 " + longDataBodyMap.keySet().size() + " 个数据道");
@@ -34,9 +50,9 @@ public class SEGYUtils {
     }
 
     /**
-     * 解析 SEG Y 文件的的文件头
+     * 解析 SEG-Y 文件的文件头
      *
-     * @param filePath SEG Y 文件路径
+     * @param filePath SEG-Y 文件路径
      * @return FileHeader
      */
     public static FileHeader parseFileHeader(String filePath) {
@@ -51,9 +67,9 @@ public class SEGYUtils {
     }
 
     /**
-     * 解析 SEG Y 文件的的文件头
+     * 解析 SEG-Y 文件的文件头
      *
-     * @param file SEG Y 文件
+     * @param file SEG-Y 文件
      * @return FileHeader
      */
     public static FileHeader parseFileHeader(File file) {
@@ -104,23 +120,23 @@ public class SEGYUtils {
     }
 
     /**
-     * 解析 SEG Y 文件的的数据体
+     * 解析 SEG-Y 文件的的数据体
      *
-     * @param file SEG Y 文件
-     * @return DataBody
+     * @param file SEG-Y 文件
+     * @return DataTrace
      */
-    public static Map<Long, DataBody> parseDataBody(File file, FileHeader fileHeader, boolean processDisplay) {
+    public static Map<Long, DataTrace> parseDataBody(File file, FileHeader fileHeader, boolean processDisplay) {
         return parseDataBody(file.getAbsolutePath(), fileHeader, processDisplay);
     }
 
     /**
-     * 解析 SEG Y 文件的数据体
+     * 解析 SEG-Y 文件的数据体
      *
-     * @param filePath SEG Y 文件路径
-     * @return DataBody
+     * @param filePath SEG-Y 文件路径
+     * @return DataTrace
      */
-    public static Map<Long, DataBody> parseDataBody(String filePath, FileHeader fileHeader, boolean processDisplay) {
-        Map<Long, DataBody> dataBodyMap = new HashMap<>();
+    public static Map<Long, DataTrace> parseDataBody(String filePath, FileHeader fileHeader, boolean processDisplay) {
+        Map<Long, DataTrace> dataBodyMap = new HashMap<>();
 
         try (RandomAccessFile file = new RandomAccessFile(filePath, "r")) {
             long cnt = 0;
@@ -130,101 +146,101 @@ public class SEGYUtils {
                 cnt++;
                 if (processDisplay)
                     System.out.println("++第 " + cnt + " 数据道++");
-                DataBody dataBody = new DataBody();
+                DataTrace dataTrace = new DataTrace();
                 byte[] bytes = new byte[240];
                 file.read(bytes, 0, bytes.length);
                 ByteBuffer buffer = ByteBuffer.wrap(bytes).order(ByteOrder.BIG_ENDIAN);
 
-                dataBody.setTraceSequenceNumberWithinLine(buffer.getInt());
-                dataBody.setTraceSequenceNumberWithinSEGY(buffer.getInt());
-                dataBody.setOriginalFieldRecordNumber(buffer.getInt());
-                dataBody.setTraceNumberWithinTheOriginal(buffer.getInt());
-                dataBody.setEnergySourcePointNumber(buffer.getInt());
-                dataBody.setEnsembleNumber(buffer.getInt());
-                dataBody.setTraceNumberWithinTheEnsemble(buffer.getInt());
-                dataBody.setTraceIdentificationCode(buffer.getShort());
-                dataBody.setVerticallySummedTraces(buffer.getShort());
-                dataBody.setHorizontallyStackedTraces(buffer.getShort());
-                dataBody.setDataUse(buffer.getShort());
-                dataBody.setSourcePointToReceiverGroup(buffer.getInt());
-                dataBody.setReceiverGroupElevation(buffer.getInt());
-                dataBody.setSurfaceElevationAtSource(buffer.getInt());
-                dataBody.setSourceDepthBelowSurface(buffer.getInt());
-                dataBody.setDatumElevationAtReceiverGroup(buffer.getInt());
-                dataBody.setDatumElevationAtSource(buffer.getInt());
-                dataBody.setWaterDepthAtSource(buffer.getInt());
-                dataBody.setWaterDepthAtGroup(buffer.getInt());
-                dataBody.setScalar1(buffer.getShort());
-                dataBody.setScalar2(buffer.getShort());
-                dataBody.setSourceCoordinateX(buffer.getInt());
-                dataBody.setSourceCoordinateY(buffer.getInt());
-                dataBody.setGroupCoordinateX(buffer.getInt());
-                dataBody.setGroupCoordinateY(buffer.getInt());
-                dataBody.setCoordinateUnits(buffer.getShort());
-                dataBody.setWeatheringVelocity(buffer.getShort());
-                dataBody.setSubweatheringVelocity(buffer.getShort());
-                dataBody.setUpholeTimeAtSourceInMilliseconds(buffer.getShort());
-                dataBody.setUpholeTimeAtGroupInMilliseconds(buffer.getShort());
-                dataBody.setSourceStaticCorrectionInMilliseconds(buffer.getShort());
-                dataBody.setGroupStaticCorrectionInMilliseconds(buffer.getShort());
-                dataBody.setTotalStaticAppliedInMilliseconds(buffer.getShort());
-                dataBody.setLagTimeA(buffer.getShort());
-                dataBody.setLagTimeB(buffer.getShort());
-                dataBody.setDelayRecordingTime(buffer.getShort());
-                dataBody.setMuteTimeStart(buffer.getShort());
-                dataBody.setMuteTimeEnd(buffer.getShort());
-                dataBody.setNumberOfSamplesInThisTrace(buffer.getShort());
-                dataBody.setSampleIntervalInMicroseconds(buffer.getShort());
-                dataBody.setGainTypeOfFieldInstruments(buffer.getShort());
-                dataBody.setInstrumentGainConstant(buffer.getShort());
-                dataBody.setInstrumentEarlyOrInitialGain(buffer.getShort());
-                dataBody.setCorrelated(buffer.getShort());
-                dataBody.setSweepFrequencyAtStart(buffer.getShort());
-                dataBody.setSweepFrequencyAtEnd(buffer.getShort());
-                dataBody.setSweepLengthInMilliseconds(buffer.getShort());
-                dataBody.setSweepType(buffer.getShort());
-                dataBody.setSweepTraceTaperLengthAtStart(buffer.getShort());
-                dataBody.setSweepTraceTaperLengthAtEnd(buffer.getShort());
-                dataBody.setTaperType(buffer.getShort());
-                dataBody.setAliasFilterFrequency(buffer.getShort());
-                dataBody.setAliasFilterSlope(buffer.getShort());
-                dataBody.setNotchFilterFrequency(buffer.getShort());
-                dataBody.setNotchFilterSlope(buffer.getShort());
-                dataBody.setLowCutFrequency(buffer.getShort());
-                dataBody.setHighCutFrequency(buffer.getShort());
-                dataBody.setLowCutSlope(buffer.getShort());
-                dataBody.setHighCutSlope(buffer.getShort());
-                dataBody.setYearDataRecorded(buffer.getShort());
-                dataBody.setDayOfYear(buffer.getShort());
-                dataBody.setHourOfDay(buffer.getShort());
-                dataBody.setMinuteOfHour(buffer.getShort());
-                dataBody.setSecondOfMinute(buffer.getShort());
-                dataBody.setTimeBasisCode(buffer.getShort());
-                dataBody.setTraceWeightingFactor(buffer.getShort());
-                dataBody.setRollSwitchPositionOne(buffer.getShort());
-                dataBody.setTraceNumberOneWithinOriginal(buffer.getShort());
-                dataBody.setLastTraceWithinOriginal(buffer.getShort());
-                dataBody.setGapSize(buffer.getShort());
-                dataBody.setOverTravelAssociated(buffer.getShort());
-                dataBody.setxCoordinateOfEnsemble(buffer.getInt());
-                dataBody.setyCoordinateOfEnsemble(buffer.getInt());
-                dataBody.setInLineNumber(buffer.getInt());
-                dataBody.setCrossLineNumber(buffer.getInt());
-                dataBody.setShotpointNumber(buffer.getInt());
-                dataBody.setScalar3(buffer.getShort());
-                dataBody.setTraceValueMeasurementUnit(buffer.getShort());
-                dataBody.setTransductionConstant(get6BytesAsLong(buffer));
-                dataBody.setTransductionUnits(buffer.getShort());
-                dataBody.setDeviceTraceIdentifier(buffer.getShort());
-                dataBody.setScalar4(buffer.getShort());
-                dataBody.setSourceTypeOrientation(buffer.getShort());
-                dataBody.setSourceEnergyDirection(get6BytesAsLong(buffer));
-                dataBody.setSourceMeasurement(get6BytesAsLong(buffer));
-                dataBody.setSourceMeasurementUnit(buffer.getShort());
+                dataTrace.setTraceSequenceNumberWithinLine(buffer.getInt());
+                dataTrace.setTraceSequenceNumberWithinSEGY(buffer.getInt());
+                dataTrace.setOriginalFieldRecordNumber(buffer.getInt());
+                dataTrace.setTraceNumberWithinTheOriginal(buffer.getInt());
+                dataTrace.setEnergySourcePointNumber(buffer.getInt());
+                dataTrace.setEnsembleNumber(buffer.getInt());
+                dataTrace.setTraceNumberWithinTheEnsemble(buffer.getInt());
+                dataTrace.setTraceIdentificationCode(buffer.getShort());
+                dataTrace.setVerticallySummedTraces(buffer.getShort());
+                dataTrace.setHorizontallyStackedTraces(buffer.getShort());
+                dataTrace.setDataUse(buffer.getShort());
+                dataTrace.setSourcePointToReceiverGroup(buffer.getInt());
+                dataTrace.setReceiverGroupElevation(buffer.getInt());
+                dataTrace.setSurfaceElevationAtSource(buffer.getInt());
+                dataTrace.setSourceDepthBelowSurface(buffer.getInt());
+                dataTrace.setDatumElevationAtReceiverGroup(buffer.getInt());
+                dataTrace.setDatumElevationAtSource(buffer.getInt());
+                dataTrace.setWaterDepthAtSource(buffer.getInt());
+                dataTrace.setWaterDepthAtGroup(buffer.getInt());
+                dataTrace.setScalar1(buffer.getShort());
+                dataTrace.setScalar2(buffer.getShort());
+                dataTrace.setSourceCoordinateX(buffer.getInt());
+                dataTrace.setSourceCoordinateY(buffer.getInt());
+                dataTrace.setGroupCoordinateX(buffer.getInt());
+                dataTrace.setGroupCoordinateY(buffer.getInt());
+                dataTrace.setCoordinateUnits(buffer.getShort());
+                dataTrace.setWeatheringVelocity(buffer.getShort());
+                dataTrace.setSubweatheringVelocity(buffer.getShort());
+                dataTrace.setUpholeTimeAtSourceInMilliseconds(buffer.getShort());
+                dataTrace.setUpholeTimeAtGroupInMilliseconds(buffer.getShort());
+                dataTrace.setSourceStaticCorrectionInMilliseconds(buffer.getShort());
+                dataTrace.setGroupStaticCorrectionInMilliseconds(buffer.getShort());
+                dataTrace.setTotalStaticAppliedInMilliseconds(buffer.getShort());
+                dataTrace.setLagTimeA(buffer.getShort());
+                dataTrace.setLagTimeB(buffer.getShort());
+                dataTrace.setDelayRecordingTime(buffer.getShort());
+                dataTrace.setMuteTimeStart(buffer.getShort());
+                dataTrace.setMuteTimeEnd(buffer.getShort());
+                dataTrace.setNumberOfSamplesInThisTrace(buffer.getShort());
+                dataTrace.setSampleIntervalInMicroseconds(buffer.getShort());
+                dataTrace.setGainTypeOfFieldInstruments(buffer.getShort());
+                dataTrace.setInstrumentGainConstant(buffer.getShort());
+                dataTrace.setInstrumentEarlyOrInitialGain(buffer.getShort());
+                dataTrace.setCorrelated(buffer.getShort());
+                dataTrace.setSweepFrequencyAtStart(buffer.getShort());
+                dataTrace.setSweepFrequencyAtEnd(buffer.getShort());
+                dataTrace.setSweepLengthInMilliseconds(buffer.getShort());
+                dataTrace.setSweepType(buffer.getShort());
+                dataTrace.setSweepTraceTaperLengthAtStart(buffer.getShort());
+                dataTrace.setSweepTraceTaperLengthAtEnd(buffer.getShort());
+                dataTrace.setTaperType(buffer.getShort());
+                dataTrace.setAliasFilterFrequency(buffer.getShort());
+                dataTrace.setAliasFilterSlope(buffer.getShort());
+                dataTrace.setNotchFilterFrequency(buffer.getShort());
+                dataTrace.setNotchFilterSlope(buffer.getShort());
+                dataTrace.setLowCutFrequency(buffer.getShort());
+                dataTrace.setHighCutFrequency(buffer.getShort());
+                dataTrace.setLowCutSlope(buffer.getShort());
+                dataTrace.setHighCutSlope(buffer.getShort());
+                dataTrace.setYearDataRecorded(buffer.getShort());
+                dataTrace.setDayOfYear(buffer.getShort());
+                dataTrace.setHourOfDay(buffer.getShort());
+                dataTrace.setMinuteOfHour(buffer.getShort());
+                dataTrace.setSecondOfMinute(buffer.getShort());
+                dataTrace.setTimeBasisCode(buffer.getShort());
+                dataTrace.setTraceWeightingFactor(buffer.getShort());
+                dataTrace.setRollSwitchPositionOne(buffer.getShort());
+                dataTrace.setTraceNumberOneWithinOriginal(buffer.getShort());
+                dataTrace.setLastTraceWithinOriginal(buffer.getShort());
+                dataTrace.setGapSize(buffer.getShort());
+                dataTrace.setOverTravelAssociated(buffer.getShort());
+                dataTrace.setxCoordinateOfEnsemble(buffer.getInt());
+                dataTrace.setyCoordinateOfEnsemble(buffer.getInt());
+                dataTrace.setInLineNumber(buffer.getInt());
+                dataTrace.setCrossLineNumber(buffer.getInt());
+                dataTrace.setShotpointNumber(buffer.getInt());
+                dataTrace.setScalar3(buffer.getShort());
+                dataTrace.setTraceValueMeasurementUnit(buffer.getShort());
+                dataTrace.setTransductionConstant(get6BytesAsLong(buffer));
+                dataTrace.setTransductionUnits(buffer.getShort());
+                dataTrace.setDeviceTraceIdentifier(buffer.getShort());
+                dataTrace.setScalar4(buffer.getShort());
+                dataTrace.setSourceTypeOrientation(buffer.getShort());
+                dataTrace.setSourceEnergyDirection(get6BytesAsLong(buffer));
+                dataTrace.setSourceMeasurement(get6BytesAsLong(buffer));
+                dataTrace.setSourceMeasurementUnit(buffer.getShort());
 
                 // 处理数据体第二部分
-                float[] floats = new float[dataBody.getNumberOfSamplesInThisTrace()];
-                for (int i = 0; i < dataBody.getNumberOfSamplesInThisTrace(); i++) {
+                float[] floats = new float[dataTrace.getNumberOfSamplesInThisTrace()];
+                for (int i = 0; i < dataTrace.getNumberOfSamplesInThisTrace(); i++) {
                     switch (fileHeader.getDataSampleFormatCode()) {
                         case 1: // IBM浮点数
                             floats[i] = convertIbmToFloat(file.readInt());
@@ -239,12 +255,12 @@ public class SEGYUtils {
                             throw new UnsupportedOperationException("Unsupported format code: " + fileHeader.getDataSampleFormatCode());
                     }
                 }
-                dataBody.setSamplingData(floats);
+                dataTrace.setSamplingData(floats);
 
-                dataBodyMap.put(cnt, dataBody);
+                dataBodyMap.put(cnt, dataTrace);
 
                 if (processDisplay)
-                    System.out.println(dataBody);
+                    System.out.println(dataTrace);
             }
         } catch (IOException e) {
             e.printStackTrace();
@@ -253,6 +269,7 @@ public class SEGYUtils {
         return dataBodyMap;
     }
 
+    // 6 字节合并为 long 型
     private static long combineToLong(byte a, byte b, byte c, byte d, byte e, byte f) {
         long res = 0;
         res += (long) a << 40;
@@ -265,6 +282,7 @@ public class SEGYUtils {
         return res;
     }
 
+    // 4 字节合并为 short 型
     private static int combineToInt(byte a, byte b, byte c, byte d) {
         int res = 0;
         res += a << 24;
@@ -275,6 +293,7 @@ public class SEGYUtils {
         return res;
     }
 
+    // 2 字节合并为 short 型
     private static short combineToShort(byte a, byte b) {
         short res = 0;
         res += (short) (a << 8);
@@ -283,7 +302,7 @@ public class SEGYUtils {
         return res;
     }
 
-    // IBM浮点数转换 (实现参考 SEGY 规范)
+    // IBM 浮点数转换 (实现参考 SEG-Y 规范)
     private static float convertIbmToFloat(int ibmFloat) {
         int sign = ((ibmFloat >> 31) == 0) ? 1 : -1;
         int exponent = ((ibmFloat >> 24) & 0x7F) - 64;
@@ -291,8 +310,8 @@ public class SEGYUtils {
         return (float) (sign * mantissa * Math.pow(16, exponent - 6));
     }
 
+    // 读取 6 字节为 long 型，按大端序拼接
     private static long get6BytesAsLong(ByteBuffer buffer) {
-        // 读取6字节，按大端序拼接
         long value = 0;
         for (int i = 0; i < 6; i++) {
             value = (value << 8) | (buffer.get() & 0xFF);
