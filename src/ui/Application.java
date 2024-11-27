@@ -1,3 +1,5 @@
+package ui;
+
 import pojo.entity.SEGY;
 import util.SEGYUtils;
 
@@ -6,15 +8,15 @@ import java.util.Scanner;
 
 /**
  * @author ZZHow
- * @date 2024/11/25
+ * @date 2024/11/27
  */
-public class Main {
-    public static void main(String[] args) {
+public class Application {
+    public static void show(String[] args) {
         Scanner scanner = new Scanner(System.in);
         SEGY segy = new SEGY();
         String filePath = "";
 
-        System.out.println("ZSEGY 1.0.0");
+        System.out.println("ZSEGY 1.0.1");
         System.out.println("Author: ZZHow");
 
         // 命令模式
@@ -31,7 +33,8 @@ public class Main {
                         num = Long.parseLong(args[1]);
                     } catch (NumberFormatException e) {
                         System.out.println("格式错误，输入 -help 查看提示");
-                        System.exit(0);;
+                        System.exit(0);
+                        ;
                     }
                     segy = SEGYUtils.parseSEGY(args[2]);
                     System.out.println("\n@@@第 " + num + " 个数据道@@@");
@@ -56,7 +59,7 @@ public class Main {
                     filePath = args[1];
                 }
                 case "-help", "help" -> {
-                    System.out.println("--- ZSEGY 1.0.0 使用说明 ---");
+                    System.out.println("--- ZSEGY 1.0.1 使用说明 ---");
                     System.out.println("java -jar zsegy.jar [-command] <num> [filePath]");
                     System.out.println("[-command]: ");
                     System.out.println("-head [filePath]：解析并输出文件头");
