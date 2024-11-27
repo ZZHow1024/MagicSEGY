@@ -10,29 +10,29 @@ public class SEGY {
     // 文件头
     private FileHeader fileHeader;
     // 数据体
-    private Map<Long, DataBody> dataBodies;
+    private Map<Long, DataTrace> dataBody;
 
     public SEGY() {
     }
 
-    public SEGY(FileHeader fileHeader, Map<Long, DataBody> dataBodies) {
+    public SEGY(FileHeader fileHeader, Map<Long, DataTrace> dataBody) {
         this.fileHeader = fileHeader;
-        this.dataBodies = dataBodies;
+        this.dataBody = dataBody;
     }
 
     public FileHeader getFileHeader() {
         return fileHeader;
     }
 
-    public Map<Long, DataBody> getDataBodies() {
-        return dataBodies;
+    public Map<Long, DataTrace> getDataBody() {
+        return dataBody;
     }
 
     public void setFileHeader(FileHeader fileHeader) {
         this.fileHeader = fileHeader;
     }
 
-    public void setDataBodies(Map<Long, DataBody> dataBodies) {
-        this.dataBodies = dataBodies;
+    public void setDataBody(Map<Long, DataTrace> dataBody) {
+        this.dataBody = dataBody;
     }
 }

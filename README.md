@@ -47,6 +47,12 @@ ZSEGY 是一款跨平台的 SEG-Y 文件解析工具，支持命令模式和交�
         3. 展示数据体
         4. 退出程序
 
+------
+
+## 参考文献
+
+- SEG Y rev 1Release 1.02: [library.seg.org](https://library.seg.org/pb-assets/technical-standards/seg_y_rev1-1686080991247.pdf)
+
 ---
 
 ## 各版本功能介绍
