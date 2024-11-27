@@ -33,6 +33,11 @@ public class SEGYUtils {
      * @return SEGY
      */
     public static SEGY parseSEGY(String filePath) {
+        if (!new File(filePath).exists()) {
+            System.out.println("文件不存在");
+            return null;
+        }
+
         SEGY segy = new SEGY();
 
         System.out.println("正在解析中...");

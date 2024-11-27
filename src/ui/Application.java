@@ -1,9 +1,12 @@
 package ui;
 
+import pojo.entity.DataTrace;
+import pojo.entity.FileHeader;
 import pojo.entity.SEGY;
 import util.SEGYUtils;
 
 import java.io.File;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -23,40 +26,58 @@ public class Application {
         if (args.length != 0) {
             switch (args[0]) {
                 case "-head", "head" -> {
-                    System.out.println("正在解析中...");
-                    System.out.println(SEGYUtils.parseFileHeader(args[1]));
+                    FileHeader fileHeader = null;
+                    try {
+                        fileHeader = SEGYUtils.parseFileHeader(args[1]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("格式错误，输入 -help 查看提示");
+                    }
+                    if (fileHeader != null)
+                        System.out.println(fileHeader);
                     System.exit(0);
                 }
                 case "-body", "body" -> {
                     long num = 1;
                     try {
                         num = Long.parseLong(args[1]);
-                    } catch (NumberFormatException e) {
+                        segy = SEGYUtils.parseSEGY(args[2]);
+                    } catch (ArrayIndexOutOfBoundsException | NumberFormatException e) {
                         System.out.println("格式错误，输入 -help 查看提示");
                         System.exit(0);
-                        ;
+                    } catch (UnsupportedOperationException e) {
+                        System.out.println("数据采样格式编码错误，请检查");
                     }
-                    segy = SEGYUtils.parseSEGY(args[2]);
-                    System.out.println("\n@@@第 " + num + " 个数据道@@@");
-                    System.out.println(segy.getDataBody().get(num));
+                    if (segy != null) {
+                        System.out.println("\n@@@第 " + num + " 个数据道@@@");
+                        System.out.println(segy.getDataBody().get(num));
+                    }
                     System.exit(0);
                 }
                 case "-all", "all" -> {
-                    long num;
+                    long num = 1;
                     try {
                         num = Long.parseLong(args[1]);
+                        segy = SEGYUtils.parseSEGY(args[2]);
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("格式错误，输入 -help 查看提示");
                     } catch (NumberFormatException e) {
                         System.out.println("输入格式错误，输入 -help 查看提示");
                         break;
                     }
-                    segy = SEGYUtils.parseSEGY(args[2]);
-                    System.out.println(segy.getFileHeader());
-                    System.out.println("\n@@@第 " + num + " 个数据道@@@");
-                    System.out.println(segy.getDataBody().get(num));
+                    if (segy != null) {
+                        System.out.println(segy.getFileHeader());
+                        System.out.println("\n@@@第 " + num + " 个数据道@@@");
+                        System.out.println(segy.getDataBody().get(num));
+                    }
                     System.exit(0);
                 }
                 case "-i", "i" -> {
-                    filePath = args[1];
+                    try {
+                        filePath = args[1];
+                    } catch (ArrayIndexOutOfBoundsException e) {
+                        System.out.println("输入格式错误，输入 -help 查看提示");
+                        System.exit(0);
+                    }
                 }
                 case "-help", "help" -> {
                     System.out.println("--- ZSEGY 1.0.1 使用说明 ---");
@@ -109,12 +130,24 @@ public class Application {
                     }
                 }
                 case "1" -> {
-                    System.out.println(segy.getFileHeader());
+                    if (segy != null)
+                        System.out.println(segy.getFileHeader());
+                    else
+                        System.out.println("文件头为空");
                 }
                 case "2" -> {
-                    System.out.print("数据道数：");
-                    long num = scanner.nextLong();
-                    System.out.println(segy.getDataBody().get(num));
+                    if (segy != null) {
+                        Map<Long, DataTrace> dataBody = segy.getDataBody();
+                        if (dataBody == null) {
+                            System.out.println("数据体为空");
+                        } else {
+                            System.out.print("数据道数：");
+                            long num = scanner.nextLong();
+                            System.out.println(dataBody.get(num));
+                        }
+                    } else {
+                        System.out.println("数据体为空");
+                    }
                 }
                 case "3" -> {
                     System.out.println("程序退出...");
