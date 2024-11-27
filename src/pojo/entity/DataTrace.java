@@ -6,8 +6,8 @@ import java.util.Arrays;
  * @author ZZHow
  * @date 2024/11/25
  */
-public class DataBody {
-    /* 数据体第一部分——道头 */
+public class DataTrace {
+    /* 数据道第一部分——道头 */
     // 1-4：测线中道顺序号
     private Integer traceSequenceNumberWithinLine;
     // 5-8：SEG Y文件中道顺序号
@@ -183,9 +183,10 @@ public class DataBody {
     // 233-240：未赋值――为任选信息预留
     /**/
 
+    /* 数据道第二部分——采样数据 */
     private float[] samplingData;
 
-    public DataBody() {
+    public DataTrace() {
     }
 
     public Integer getTraceSequenceNumberWithinLine() {
