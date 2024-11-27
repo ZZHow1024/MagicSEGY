@@ -35,7 +35,7 @@ public class SEGYUtils {
     public static SEGY parseSEGY(String filePath) {
         SEGY segy = new SEGY();
 
-        System.out.println("正在解析文件中，请稍后...");
+        System.out.println("正在解析中...");
         long start = System.currentTimeMillis();
         FileHeader fileHeader = SEGYUtils.parseFileHeader(filePath);
         segy.setFileHeader(fileHeader);
