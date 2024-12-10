@@ -141,7 +141,7 @@ public class DataTrace {
     // 169-170：道加权因子
     private Short traceWeightingFactor;
     // 171-172：滚动开关位置1的检波器组号
-    private Short RollSwitchPositionOne;
+    private Short rollSwitchPositionOne;
     // 173-174：野外原始记录中道号1的检波器组号
     private Short traceNumberOneWithinOriginal;
     // 175-176：野外原始记录中最后一道的检波器组号
@@ -454,7 +454,7 @@ public class DataTrace {
     }
 
     public Short getRollSwitchPositionOne() {
-        return RollSwitchPositionOne;
+        return rollSwitchPositionOne;
     }
 
     public Short getTraceNumberOneWithinOriginal() {
@@ -802,7 +802,7 @@ public class DataTrace {
     }
 
     public void setRollSwitchPositionOne(Short rollSwitchPositionOne) {
-        RollSwitchPositionOne = rollSwitchPositionOne;
+        this.rollSwitchPositionOne = rollSwitchPositionOne;
     }
 
     public void setTraceNumberOneWithinOriginal(Short traceNumberOneWithinOriginal) {
@@ -954,7 +954,7 @@ public class DataTrace {
                 "\n秒=" + secondOfMinute +
                 "\n时间基准码=" + timeBasisCode +
                 "\n道加权因子=" + traceWeightingFactor +
-                "\n滚动开关位置1的检波器组号=" + RollSwitchPositionOne +
+                "\n滚动开关位置1的检波器组号=" + rollSwitchPositionOne +
                 "\n野外原始记录中道号1的检波器组号=" + traceNumberOneWithinOriginal +
                 "\n野外原始记录中最后一道的检波器组号=" + lastTraceWithinOriginal +
                 "\n间隔大小（滚动时甩掉的总检波器组数）=" + gapSize +

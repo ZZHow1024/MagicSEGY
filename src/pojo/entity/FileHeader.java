@@ -13,9 +13,9 @@ public class FileHeader {
     // 3201-3204：作业标识号
     private Integer jobIdentificationNumber;
     // 3205-3208：测线号
-    private Integer LineNumber;
+    private Integer lineNumber;
     // 3209-3212：卷号
-    private Integer ReelNumber;
+    private Integer reelNumber;
     // 3213-3214：每个道集的数据道数。叠前数据强制要求
     private Short dataTraces;
     // 3215-3216：每个道集的辅助道数。叠前数据强制要求
@@ -67,7 +67,7 @@ public class FileHeader {
     // 3261-3500：未赋值
     /**/
     // 3501-3502：SEG Y格式修订版号
-    private Short SEGYFormatRevisionNumber;
+    private Short segyFormatRevisionNumber;
     // 3503-3504：固定长度道标志
     private Short fixedLengthTraceFlag;
     // 3505-3506：3200字节扩展原文文件头记录在二进制头后
@@ -87,11 +87,11 @@ public class FileHeader {
     }
 
     public Integer getLineNumber() {
-        return LineNumber;
+        return lineNumber;
     }
 
     public Integer getReelNumber() {
-        return ReelNumber;
+        return reelNumber;
     }
 
     public Short getDataTraces() {
@@ -191,7 +191,7 @@ public class FileHeader {
     }
 
     public Short getSEGYFormatRevisionNumber() {
-        return SEGYFormatRevisionNumber;
+        return segyFormatRevisionNumber;
     }
 
     public Short getFixedLengthTraceFlag() {
@@ -211,11 +211,11 @@ public class FileHeader {
     }
 
     public void setLineNumber(Integer lineNumber) {
-        LineNumber = lineNumber;
+        this.lineNumber = lineNumber;
     }
 
     public void setReelNumber(Integer reelNumber) {
-        ReelNumber = reelNumber;
+        this.reelNumber = reelNumber;
     }
 
     public void setDataTraces(Short dataTraces) {
@@ -315,7 +315,7 @@ public class FileHeader {
     }
 
     public void setSEGYFormatRevisionNumber(Short SEGYFormatRevisionNumber) {
-        this.SEGYFormatRevisionNumber = SEGYFormatRevisionNumber;
+        this.segyFormatRevisionNumber = SEGYFormatRevisionNumber;
     }
 
     public void setFixedLengthTraceFlag(Short fixedLengthTraceFlag) {
@@ -332,8 +332,8 @@ public class FileHeader {
                 textualFileHeader +
                 "\n\n###文件头第二部分###" +
                 "\n作业标识号=" + jobIdentificationNumber +
-                "\n测线号=" + LineNumber +
-                "\n卷号=" + ReelNumber +
+                "\n测线号=" + lineNumber +
+                "\n卷号=" + reelNumber +
                 "\n每个道集的数据道数=" + dataTraces +
                 "\n每个道集的辅助道数=" + auxiliaryTraces +
                 "\n微秒（us）形式的采样间隔=" + sampleIntervalInMicroseconds +
@@ -358,7 +358,7 @@ public class FileHeader {
                 "\n测量系统=" + measurementSystem +
                 "\n脉冲极化码=" + impulseSignalPolarity +
                 "\n可控源极化码=" + vibratoryPolarityCode +
-                "\nSEG Y格式修订版号=" + SEGYFormatRevisionNumber +
+                "\nSEG Y格式修订版号=" + segyFormatRevisionNumber +
                 "\n固定长度道标志=" + fixedLengthTraceFlag +
                 "\n3200字节扩展原文文件头记录在二进制头后=" + extendedTextualFileHeader;
     }
